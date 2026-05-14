@@ -1,6 +1,8 @@
 package eu.ksliwinski.utils;
 
 import eu.ksliwinski.models.*;
+import eu.ksliwinski.proto.Graph;
+import eu.ksliwinski.proto.GraphRepresentation;
 import org.junit.jupiter.api.Test;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -85,9 +87,7 @@ class GraphGeneratorTest {
 
     @Test
     void testInvalidRepresentationThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            GraphGenerator.generate(10, 50, null, false);
-        });
+        assertThrows(IllegalArgumentException.class, () -> GraphGenerator.generate(10, 50, null, false));
     }
 
     /**
@@ -106,7 +106,7 @@ class GraphGeneratorTest {
             int current = queue.poll();
 
             for (Edge edge : graph.getNeighbours(current)) {
-                int neighbor = edge.dest;
+                int neighbor = edge.dest();
                 if (!visited[neighbor]) {
                     visited[neighbor] = true;
                     visitedCount++;

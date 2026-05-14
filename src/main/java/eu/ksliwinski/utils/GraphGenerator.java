@@ -1,8 +1,8 @@
 package eu.ksliwinski.utils;
 
 import eu.ksliwinski.models.AdjacencyListGraph;
-import eu.ksliwinski.models.Graph;
-import eu.ksliwinski.models.GraphRepresentation;
+import eu.ksliwinski.proto.Graph;
+import eu.ksliwinski.proto.GraphRepresentation;
 import eu.ksliwinski.models.IncidenceMatrixGraph;
 
 import java.util.Random;

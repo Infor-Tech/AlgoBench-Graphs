@@ -1,5 +1,7 @@
 package eu.ksliwinski.models;
 
+import eu.ksliwinski.proto.Graph;
+
 import java.util.ArrayList;
 import java.util.List;
 

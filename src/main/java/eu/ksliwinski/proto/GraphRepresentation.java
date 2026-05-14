@@ -1,4 +1,4 @@
-package eu.ksliwinski.models;
+package eu.ksliwinski.proto;
 
 public enum GraphRepresentation {
     INCIDENCE_MATRIX,

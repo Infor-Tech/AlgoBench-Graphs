@@ -1,4 +1,6 @@
-package eu.ksliwinski.models;
+package eu.ksliwinski.proto;
+
+import eu.ksliwinski.models.Edge;
 
 import java.util.List;
 
