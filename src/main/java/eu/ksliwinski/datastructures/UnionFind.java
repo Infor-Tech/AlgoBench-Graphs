@@ -1,4 +1,4 @@
-package eu.ksliwinski.models;
+package eu.ksliwinski.datastructures;
 
 /**
  * Disjoint-set data structure

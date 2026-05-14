@@ -2,7 +2,7 @@ package eu.ksliwinski.algorithms.mst;
 
 import eu.ksliwinski.models.Edge;
 import eu.ksliwinski.models.MstResult;
-import eu.ksliwinski.models.UnionFind;
+import eu.ksliwinski.datastructures.UnionFind;
 import eu.ksliwinski.proto.Graph;
 
 import java.util.ArrayList;

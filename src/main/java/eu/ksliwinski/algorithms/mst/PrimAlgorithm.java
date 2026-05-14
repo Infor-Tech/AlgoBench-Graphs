@@ -1,7 +1,7 @@
 package eu.ksliwinski.algorithms.mst;
 
 import eu.ksliwinski.models.Edge;
-import eu.ksliwinski.models.EdgeMinHeap;
+import eu.ksliwinski.datastructures.EdgeMinHeap;
 import eu.ksliwinski.models.MstResult;
 import eu.ksliwinski.proto.Graph;
 

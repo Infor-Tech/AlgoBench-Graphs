@@ -1,4 +1,6 @@
-package eu.ksliwinski.models;
+package eu.ksliwinski.datastructures;
+
+import eu.ksliwinski.models.Edge;
 
 public class EdgeMinHeap {
     private final Edge[] heap;
