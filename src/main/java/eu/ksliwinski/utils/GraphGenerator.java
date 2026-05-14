@@ -1,6 +1,7 @@
 package eu.ksliwinski.utils;
 
 import eu.ksliwinski.models.AdjacencyListGraph;
+import eu.ksliwinski.models.AdjacencyMatrixGraph;
 import eu.ksliwinski.proto.Graph;
 import eu.ksliwinski.proto.GraphRepresentation;
 import eu.ksliwinski.models.IncidenceMatrixGraph;
@@ -29,6 +30,7 @@ public class GraphGenerator {
 
         Graph graph = switch (representation) {
             case INCIDENCE_MATRIX -> new IncidenceMatrixGraph(v, targetEdges);
+            case ADJACENCY_MATRIX -> new AdjacencyMatrixGraph(v);
             case ADJACENCY_LIST -> new AdjacencyListGraph(v);
             case null -> throw new IllegalArgumentException("Representation should not be null");
         };
