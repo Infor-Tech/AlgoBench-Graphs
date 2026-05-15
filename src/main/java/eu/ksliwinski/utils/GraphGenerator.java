@@ -23,10 +23,8 @@ public class GraphGenerator {
         long maxEdges = directed ? (long) v * (v - 1) : (long) v * (v - 1) / 2;
         int targetEdges = (int) (maxEdges * (density / 100.0));
 
-        // consistent graph must have V - 1 vertices
-        if (targetEdges < v - 1) {
-            targetEdges = v - 1;
-        }
+        int minEdges = directed ? v : v - 1;
+        if (targetEdges < minEdges) targetEdges = minEdges;
 
         Graph graph = switch (representation) {
             case INCIDENCE_MATRIX -> new IncidenceMatrixGraph(v, targetEdges);
@@ -51,17 +49,25 @@ public class GraphGenerator {
             vertices[i] = temp;
         }
 
-        for (int i = 1; i < v; i++) {
-            int u = vertices[random.nextInt(i)];
-            int dest = vertices[i];
-            int weight = random.nextInt(100) + 1;
-
-            graph.addEdge(u, dest, weight, directed);
-            hasEdge[u][dest] = true;
-            if (!directed) {
-                hasEdge[dest][u] = true;
+        if (directed) {
+            for (int i = 0; i < v; i++) {
+                int u = vertices[i];
+                int dest = vertices[(i + 1) % v];
+                int weight = random.nextInt(100) + 1;
+                graph.addEdge(u, dest, weight, true);
+                hasEdge[u][dest] = true;
+                currentEdges++;
             }
-            currentEdges++;
+        } else {
+            for (int i = 1; i < v; i++) {
+                int u = vertices[random.nextInt(i)];
+                int dest = vertices[i];
+                int weight = random.nextInt(100) + 1;
+                graph.addEdge(u, dest, weight, false);
+                hasEdge[u][dest] = true;
+                hasEdge[dest][u] = true;
+                currentEdges++;
+            }
         }
 
         while (currentEdges < targetEdges) {

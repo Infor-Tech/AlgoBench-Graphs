@@ -3,7 +3,7 @@ package eu.ksliwinski.datastructures;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UnionFindTest {
+public class UnionFindTest {
 
     @Test
     void testInitialState() {

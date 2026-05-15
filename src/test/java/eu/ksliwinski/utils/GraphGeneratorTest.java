@@ -1,5 +1,6 @@
 package eu.ksliwinski.utils;
 
+import eu.ksliwinski.datastructures.DynamicArray;
 import eu.ksliwinski.models.*;
 import eu.ksliwinski.proto.Graph;
 import eu.ksliwinski.proto.GraphRepresentation;
@@ -9,7 +10,7 @@ import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GraphGeneratorTest {
+public class GraphGeneratorTest {
 
     @Test
     void testListGraphCreation() {
@@ -104,9 +105,10 @@ class GraphGeneratorTest {
 
         while (!queue.isEmpty()) {
             int current = queue.poll();
+            DynamicArray<Edge> neighbours = graph.getNeighbours(current);
 
-            for (Edge edge : graph.getNeighbours(current)) {
-                int neighbor = edge.dest();
+            for (int i = 0; i < neighbours.size(); i++) {
+                int neighbor = neighbours.get(i).dest();
                 if (!visited[neighbor]) {
                     visited[neighbor] = true;
                     visitedCount++;

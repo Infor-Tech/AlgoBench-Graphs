@@ -1,9 +1,9 @@
 package eu.ksliwinski.models;
 
-import java.util.List;
+import eu.ksliwinski.datastructures.DynamicArray;
 
 /**
  * Result wrapper for Minimum Spanning Tree algorithms.
  */
-public record MstResult(long totalWeight, List<Edge> edges) {
+public record MstResult(long totalWeight, DynamicArray<Edge> edges) {
 }

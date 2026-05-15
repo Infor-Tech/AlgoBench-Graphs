@@ -1,9 +1,7 @@
 package eu.ksliwinski.models;
 
+import eu.ksliwinski.datastructures.DynamicArray;
 import eu.ksliwinski.proto.Graph;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class IncidenceMatrixGraph implements Graph {
     private final int numVertices;
@@ -11,14 +9,12 @@ public class IncidenceMatrixGraph implements Graph {
     private int currentEdgeIndex;
 
     private final int[][] matrix;
-    private final List<Edge> allEdges;
 
     public IncidenceMatrixGraph(int numVertices, int maxEdges) {
         this.numVertices = numVertices;
         this.maxEdges = maxEdges;
         this.currentEdgeIndex = 0;
         this.matrix = new int[numVertices][maxEdges];
-        this.allEdges = new ArrayList<>(maxEdges);
     }
 
     @Override
@@ -45,13 +41,12 @@ public class IncidenceMatrixGraph implements Graph {
             matrix[dest][currentEdgeIndex] = weight;
         }
 
-        allEdges.add(new Edge(src, dest, weight));
         currentEdgeIndex++;
     }
 
     @Override
-    public List<Edge> getNeighbours(int vertex) {
-        List<Edge> neighbors = new ArrayList<>();
+    public DynamicArray<Edge> getNeighbours(int vertex) {
+        DynamicArray<Edge> neighbors = new DynamicArray<>();
         for (int e = 0; e < currentEdgeIndex; e++) {
             if (matrix[vertex][e] > 0) {
                 int weight = matrix[vertex][e];
@@ -73,7 +68,31 @@ public class IncidenceMatrixGraph implements Graph {
     }
 
     @Override
-    public List<Edge> getAllEdges() {
-        return allEdges;
+    public DynamicArray<Edge> getAllEdges() {
+        DynamicArray<Edge> edges = new DynamicArray<>(currentEdgeIndex);
+
+        for (int e = 0; e < currentEdgeIndex; e++) {
+            int src = -1;
+            int dest = -1;
+            int weight = 0;
+
+            for (int v = 0; v < numVertices; v++) {
+                if (matrix[v][e] > 0) {
+                    if (src == -1) {
+                        src = v;
+                        weight = matrix[v][e];
+                    } else {
+                        dest = v;
+                    }
+                } else if (matrix[v][e] < 0) {
+                    dest = v;
+                }
+            }
+
+            if (src != -1 && dest != -1) {
+                edges.add(new Edge(src, dest, weight));
+            }
+        }
+        return edges;
     }
 }

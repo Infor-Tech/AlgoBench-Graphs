@@ -3,7 +3,7 @@ package eu.ksliwinski.datastructures;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DistanceMinHeapTest {
+public class DistanceMinHeapTest {
 
     @Test
     void testHeapOrderingByDistance() {

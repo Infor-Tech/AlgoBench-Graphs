@@ -4,7 +4,7 @@ import eu.ksliwinski.models.Edge;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class EdgeMinHeapTest {
+public class EdgeMinHeapTest {
 
     @Test
     void testHeapOrdering() {

@@ -1,24 +1,21 @@
 package eu.ksliwinski.models;
 
+import eu.ksliwinski.datastructures.DynamicArray;
 import eu.ksliwinski.proto.Graph;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdjacencyListGraph implements Graph {
     private final int numVertices;
     private int numEdges;
-    private final List<List<Edge>> adjList;
-    private final List<Edge> allEdges;
+    private final DynamicArray<DynamicArray<Edge>> adjList;
+    private Boolean isDirected = null;
 
     public AdjacencyListGraph(int numVertices)
     {
         this.numVertices = numVertices;
         this.numEdges = 0;
-        this.adjList = new ArrayList<>(numVertices);
-        this.allEdges = new ArrayList<>();
+        this.adjList = new DynamicArray<>(numVertices);
 
-        for (int i = 0; i < numVertices; i++) adjList.add(new ArrayList<>());
+        for (int i = 0; i < numVertices; i++) adjList.add(new DynamicArray<>());
     }
 
     @Override
@@ -33,9 +30,12 @@ public class AdjacencyListGraph implements Graph {
 
     @Override
     public void addEdge(int src, int dest, int weight, boolean directed) {
+        if (isDirected == null) {
+            isDirected = directed;
+        }
+
         Edge edge = new Edge(src, dest, weight);
         adjList.get(src).add(edge);
-        allEdges.add(edge);
         numEdges++;
 
         if(!directed) {
@@ -45,12 +45,26 @@ public class AdjacencyListGraph implements Graph {
     }
 
     @Override
-    public List<Edge> getNeighbours(int vertex) {
+    public DynamicArray<Edge> getNeighbours(int vertex) {
         return adjList.get(vertex);
     }
 
     @Override
-    public List<Edge> getAllEdges() {
-        return allEdges;
+    public DynamicArray<Edge> getAllEdges() {
+        DynamicArray<Edge> edges = new DynamicArray<>(numEdges);
+        boolean directed = isDirected != null && isDirected;
+
+        for (int i = 0; i < numVertices; i++) {
+            DynamicArray<Edge> neighbours = adjList.get(i);
+            for (int j = 0; j < neighbours.size(); j++) {
+                Edge edge = neighbours.get(j);
+                if (directed || edge.src() <= edge.dest()) edges.add(edge);
+            }
+        }
+        return edges;
+    }
+
+    public DynamicArray<DynamicArray<Edge>> getAdjList() {
+        return adjList;
     }
 }

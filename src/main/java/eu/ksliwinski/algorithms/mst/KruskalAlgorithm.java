@@ -1,35 +1,56 @@
 package eu.ksliwinski.algorithms.mst;
 
-import eu.ksliwinski.models.Edge;
-import eu.ksliwinski.models.MstResult;
+import eu.ksliwinski.datastructures.DynamicArray;
+import eu.ksliwinski.models.*;
 import eu.ksliwinski.datastructures.UnionFind;
-import eu.ksliwinski.proto.Graph;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import eu.ksliwinski.utils.QuickSort;
 
 public class KruskalAlgorithm {
 
     /**
      * Executes a Kruskal's algorithm on a provided graph.
      *
-     * @param graph input graph (cannot be undirected).
+     * @param graph input graph (AdjacencyMatrixGraph).
      * @return MstResult containing total weight and list of edges of mst.
      */
-    public static MstResult run(Graph graph) {
-        int v = graph.getVertexCount();
-        List<Edge> edges = new ArrayList<>(graph.getAllEdges());
+    public static MstResult run(AdjacencyMatrixGraph graph) {
+        DynamicArray<Edge> edges = graph.getAllEdges();
+        return execute(graph.getVertexCount(), edges);
+    }
 
-        Collections.sort(edges);
+    /**
+     * Executes a Kruskal's algorithm on a provided graph.
+     *
+     * @param graph input graph (AdjacencyListGraph).
+     * @return MstResult containing total weight and list of edges of mst.
+     */
+    public static MstResult run(AdjacencyListGraph graph) {
+        DynamicArray<Edge> edges = graph.getAllEdges();
+        return execute(graph.getVertexCount(), edges);
+    }
 
-        UnionFind uf = new  UnionFind(v);
+    /**
+     * Executes a Kruskal's algorithm on a provided graph.
+     *
+     * @param graph input graph (AdjacencyListGraph).
+     * @return MstResult containing total weight and list of edges of mst.
+     */
+    public static MstResult run(IncidenceMatrixGraph graph) {
+        DynamicArray<Edge> edges = graph.getAllEdges();
+        return execute(graph.getVertexCount(), edges);
+    }
+
+    private static MstResult execute(int v, DynamicArray<Edge> edges) {
+        QuickSort.sort(edges);
+
+        UnionFind uf = new UnionFind(v);
         long mstWeight = 0;
         int edgesInMst = 0;
-        List<Edge> mstEdges = new ArrayList<>(v - 1);
 
+        DynamicArray<Edge> mstEdges = new DynamicArray<>(v - 1);
 
-        for (Edge e : edges) {
+        for (int i = 0; i < edges.size(); i++) {
+            Edge e = edges.get(i);
             if (uf.union(e.src(), e.dest())) {
                 mstWeight += e.weight();
                 edgesInMst++;
@@ -41,5 +62,4 @@ public class KruskalAlgorithm {
 
         return new MstResult(mstWeight, mstEdges);
     }
-
 }
