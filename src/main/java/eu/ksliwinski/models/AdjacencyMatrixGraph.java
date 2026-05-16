@@ -72,4 +72,15 @@ public class AdjacencyMatrixGraph implements Graph {
     public int[][] getMatrix() {
         return matrix;
     }
+
+    public void print() {
+        System.out.println("--- Macierz Sąsiedztwa ---");
+        for (int i = 0; i < numVertices; i++) {
+            System.out.printf("[%2d] ", i);
+            for (int j = 0; j < numVertices; j++) {
+                System.out.printf("%3d ", matrix[i][j]);
+            }
+            System.out.println();
+        }
+    }
 }

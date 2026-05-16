@@ -67,4 +67,17 @@ public class AdjacencyListGraph implements Graph {
     public DynamicArray<DynamicArray<Edge>> getAdjList() {
         return adjList;
     }
+
+    public void print() {
+        System.out.println("--- Lista Sąsiedztwa ---");
+        for (int i = 0; i < numVertices; i++) {
+            System.out.print("[" + i + "] -> ");
+            DynamicArray<Edge> neighbors = adjList.get(i);
+            for (int j = 0; j < neighbors.size(); j++) {
+                Edge edge = neighbors.get(j);
+                System.out.print("(" + edge.dest() + ", w:" + edge.weight() + ") ");
+            }
+            System.out.println();
+        }
+    }
 }
