@@ -1,5 +1,6 @@
 package eu.ksliwinski.tui;
 
+import eu.ksliwinski.algorithms.flow.FordFulkersonAlgorithm;
 import eu.ksliwinski.algorithms.mst.KruskalAlgorithm;
 import eu.ksliwinski.algorithms.mst.PrimAlgorithm;
 import eu.ksliwinski.algorithms.shortestpath.BellmanFordAlgorithm;
@@ -39,7 +40,8 @@ public class Main {
             System.out.println("3. Wyświetl graf (Macierz i Lista)");
             System.out.println("4. Uruchom algorytmy MST (Kruskal & Prim)");
             System.out.println("5. Uruchom algorytmy Najkrótszej Ścieżki (Dijkstra & Bellman-Ford)");
-            System.out.println("6. Uruchom benchmarki JMH");
+            System.out.println("6. Uruchom algorytm Maksymalnego Przepływu (Ford-Fulkerson)");
+            System.out.println("7. Uruchom benchmarki JMH");
             System.out.println("0. Wyjście");
             System.out.print("Wybierz opcję: ");
 
@@ -56,7 +58,8 @@ public class Main {
                 case 3 -> displayGraphs();
                 case 4 -> runMstAlgorithms();
                 case 5 -> runShortestPathAlgorithms(scanner);
-                case 6 -> runJmhBenchmarks();
+                case 6 -> runMaxFlowAlgorithm(scanner); // <-- PODPIĘCIE
+                case 7 -> runJmhBenchmarks();
                 case 0 -> running = false;
                 default -> System.out.println("Nieprawidłowa opcja. Spróbuj ponownie.");
             }
@@ -135,6 +138,43 @@ public class Main {
 
         ShortestPathResult bellmanList = BellmanFordAlgorithm.run(currentListGraph, startVertex);
         System.out.println("Bellman-Ford dystans do ost. wierzchołka: " + bellmanList.distances()[currentListGraph.getVertexCount() - 1]);
+    }
+
+    private static void runMaxFlowAlgorithm(Scanner scanner) {
+        if (currentMatrixGraph == null) {
+            System.out.println("Najpierw wygeneruj lub wczytaj graf!");
+            return;
+        }
+
+        if (!isDirected) {
+            System.out.println("UWAGA: Algorytm maksymalnego przepływu zazwyczaj stosuje się dla sieci skierowanych.");
+            System.out.println("Dla grafu nieskierowanego każda krawędź działa jak rura dwukierunkowa.");
+        }
+
+        int maxV = currentMatrixGraph.getVertexCount() - 1;
+        System.out.print("Podaj wierzchołek źródłowy (source) (0 - " + maxV + "): ");
+        int source = scanner.nextInt();
+
+        System.out.print("Podaj wierzchołek docelowy (sink) (0 - " + maxV + "): ");
+        int sink = scanner.nextInt();
+
+        if (source < 0 || source > maxV || sink < 0 || sink > maxV) {
+            System.out.println("BŁĄD: Podano wierzchołki spoza zakresu!");
+            return;
+        }
+
+        if (source == sink) {
+            System.out.println("BŁĄD: Źródło i ujście nie mogą być tym samym wierzchołkiem.");
+            return;
+        }
+
+        System.out.println("\n--- Wyniki dla Macierzy Sąsiedztwa ---");
+        long maxFlowMatrix = FordFulkersonAlgorithm.run(currentMatrixGraph, source, sink);
+        System.out.println("Maksymalny przepływ: " + maxFlowMatrix);
+
+        System.out.println("\n--- Wyniki dla Listy Sąsiedztwa ---");
+        long maxFlowList = FordFulkersonAlgorithm.run(currentListGraph, source, sink);
+        System.out.println("Maksymalny przepływ: " + maxFlowList);
     }
 
     private static void runJmhBenchmarks() {

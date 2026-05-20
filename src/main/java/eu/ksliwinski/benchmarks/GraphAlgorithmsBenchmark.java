@@ -1,5 +1,6 @@
 package eu.ksliwinski.benchmarks;
 
+import eu.ksliwinski.algorithms.flow.FordFulkersonAlgorithm;
 import eu.ksliwinski.algorithms.mst.KruskalAlgorithm;
 import eu.ksliwinski.algorithms.mst.PrimAlgorithm;
 import eu.ksliwinski.algorithms.shortestpath.BellmanFordAlgorithm;
@@ -106,6 +107,20 @@ public class GraphAlgorithmsBenchmark {
     public void bellmanFordList(Blackhole bh) {
         for (int i = 0; i < INSTANCES; i++) {
             bh.consume(BellmanFordAlgorithm.run(listGraphsDirected[i], 0));
+        }
+    }
+
+    @Benchmark
+    public void fordFulkersonMatrix(Blackhole bh) {
+        for (int i = 0; i < INSTANCES; i++) {
+            bh.consume(FordFulkersonAlgorithm.run(matrixGraphsDirected[i], 0, v - 1));
+        }
+    }
+
+    @Benchmark
+    public void fordFulkersonList(Blackhole bh) {
+        for (int i = 0; i < INSTANCES; i++) {
+            bh.consume(FordFulkersonAlgorithm.run(listGraphsDirected[i], 0, v - 1));
         }
     }
 }
