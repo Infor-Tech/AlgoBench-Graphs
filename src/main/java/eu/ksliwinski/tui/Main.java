@@ -13,10 +13,13 @@ import eu.ksliwinski.models.ShortestPathResult;
 import eu.ksliwinski.proto.GraphRepresentation;
 import eu.ksliwinski.utils.GraphFileReader;
 import eu.ksliwinski.utils.GraphGenerator;
+import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
@@ -59,7 +62,10 @@ public class Main {
                 case 4 -> runMstAlgorithms();
                 case 5 -> runShortestPathAlgorithms(scanner);
                 case 6 -> runMaxFlowAlgorithm(scanner); // <-- PODPIĘCIE
-                case 7 -> runJmhBenchmarks();
+                case 7 -> {
+                    runJmhBenchmarks();
+                    return;
+                }
                 case 0 -> running = false;
                 default -> System.out.println("Nieprawidłowa opcja. Spróbuj ponownie.");
             }
@@ -181,8 +187,13 @@ public class Main {
         System.out.println("\nRozpoczynam benchmarki JMH... (To może potrwać bardzo długo!)");
         System.out.println("Upewnij się, że laptop jest podłączony do zasilania.");
         try {
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String fileName = "graph_benchmark_" + timestamp + ".csv";
+
             Options opt = new OptionsBuilder()
                     .include(GraphAlgorithmsBenchmark.class.getSimpleName())
+                    .resultFormat(ResultFormatType.CSV)
+                    .result(fileName)
                     .forks(1)
                     .build();
 
